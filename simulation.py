@@ -1,4 +1,5 @@
 import pygame
+import sys
 
 FRAMES_PER_SECOND = 4
 SCALE_FACTOR = 30
@@ -7,7 +8,7 @@ EXAMPLE_INPUT_FILE = 'states/example.csv'
 SQUARES_INPUT_FILE = 'states/squares.csv'
 XOR_GENERATORS_INPUT_FILE = 'states/xor-generators.csv'
 DIODE_INPUT_FILE = 'states/diode.csv'
-INTERRUPTED_FILE = 'states/test/interrupted.csv'
+INTERRUPTED_FILE = 'states/interrupted.csv'
 
 FILE_TO_LOAD = XOR_GENERATORS_INPUT_FILE
 
@@ -40,7 +41,7 @@ class WireworldSimulation:
         """
         self.eng.save_state(self.state, INTERRUPTED_FILE)
         pygame.quit()
-        exit(0)
+        sys.exit(0)
 
     def _loop(self):
         self._poll()
