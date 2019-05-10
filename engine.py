@@ -2,6 +2,10 @@ import numpy as np
 import wireworld as ww
 
 class WireworldEngine:
+	"""
+    A wireworld state engine based on numpy arrays
+    
+    """
 
 	def load_state(self, file):
 		return np.rot90(np.genfromtxt(file, delimiter=','), 3)
@@ -25,18 +29,18 @@ class WireworldEngine:
 	def get_next_state(self, current_state):
 		next_state = np.zeros_like(current_state)
 		for coord, val in np.ndenumerate(next_state):
-			next_state[coord] = self.get_next_value(coord, current_state)
+			next_state[coord] = self._get_next_value(coord, current_state)
 		return next_state
 	
 	
-	def get_next_value(self, coord, state_array):
+	def _get_next_value(self, coord, state_array):
 		next_val = ww.EMPTY
 		if state_array[coord] == ww.HEAD:
 			next_val = ww.TAIL
 		elif state_array[coord] == ww.TAIL:
 			next_val = ww.CONDUCTOR
 		elif state_array[coord] == ww.CONDUCTOR:
-			if 1 <= len(self.get_neighbours(coord, state_array, ww.HEAD)) <= 2:
+			if 1 <= len(self._get_neighbours(coord, state_array, ww.HEAD)) <= 2:
 				next_val = ww.HEAD
 			else:
 				next_val = ww.CONDUCTOR
@@ -44,7 +48,7 @@ class WireworldEngine:
 		return next_val
 	
 	
-	def get_neighbours(self, coord, array, condition_value):
+	def _get_neighbours(self, coord, array, condition_value):
 		neighbours = []
 		rows = len(array)
 		cols = len(array[0]) if rows else 0

@@ -12,6 +12,10 @@ INTERRUPTED_FILE = 'states/interrupted.csv'
 FILE_TO_LOAD = INTERRUPTED_FILE
 
 class WireworldSimulation:
+    """
+    A wireworld simulation using pygame
+    
+    """
     def __init__(self, eng):
         self.eng = eng
         initial_state = self.eng.load_state(FILE_TO_LOAD)
@@ -30,6 +34,10 @@ class WireworldSimulation:
             self._loop()
 
     def stop(self):
+        """
+        Stops the simulation, but saves off the state to file first
+    
+        """
         self.eng.save_state(self.state, INTERRUPTED_FILE)
         pygame.quit()
         exit(0)

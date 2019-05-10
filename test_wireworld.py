@@ -23,22 +23,22 @@ class TestStateEvolution(unittest.TestCase):
         unittest.TestCase.tearDown(self)    
     
     def test_next_value_empty_to_empty(self):
-        self.assertEqual(self.ww_eng.get_next_value((3, 2), self.test_array), ww.EMPTY, "expected EMPTY (0)")
+        self.assertEqual(self.ww_eng._get_next_value((3, 2), self.test_array), ww.EMPTY, "expected EMPTY (0)")
 
     def test_next_value_head_to_tail(self):
-        self.assertEqual(self.ww_eng.get_next_value((3, 0), self.test_array), ww.TAIL, "expected TAIL (2)")
+        self.assertEqual(self.ww_eng._get_next_value((3, 0), self.test_array), ww.TAIL, "expected TAIL (2)")
 
     def test_next_value_conductor_to_head_one_head_adjacent(self):
-        self.assertEqual(self.ww_eng.get_next_value((2, 0), self.test_array), ww.HEAD, "expected HEAD (1)")
+        self.assertEqual(self.ww_eng._get_next_value((2, 0), self.test_array), ww.HEAD, "expected HEAD (1)")
 
     def test_next_value_conductor_to_head_two_heads_adjacent(self):
-        self.assertEqual(self.ww_eng.get_next_value((1, 0), self.test_array), ww.HEAD, "expected HEAD (1)")
+        self.assertEqual(self.ww_eng._get_next_value((1, 0), self.test_array), ww.HEAD, "expected HEAD (1)")
 
     def test_next_value_conductor_to_conductor_zero_heads_adjacent(self):
-        self.assertEqual(self.ww_eng.get_next_value((2, 2), self.test_array), ww.CONDUCTOR, "expected CONDUCTOR (3)")
+        self.assertEqual(self.ww_eng._get_next_value((2, 2), self.test_array), ww.CONDUCTOR, "expected CONDUCTOR (3)")
 
     def test_next_value_conductor_to_conductor_three_heads_adjacent(self):
-        self.assertEqual(self.ww_eng.get_next_value((1, 1), self.test_array), ww.CONDUCTOR, "expected CONDUCTOR (3)")
+        self.assertEqual(self.ww_eng._get_next_value((1, 1), self.test_array), ww.CONDUCTOR, "expected CONDUCTOR (3)")
 
     def test_next_state(self):
         computed_next_state = self.ww_eng.get_next_state(self.test_array)

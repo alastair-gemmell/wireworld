@@ -16,8 +16,6 @@ VALUE_TO_RGB = {
 }
 
 # TODO:
-# 1) Doc strings / Comments
-#
 # 2) Errors:
 # a. If trying to load from a non-existent file
 # b. If trying to load from an incompatible file (e.g. not a CSV)
