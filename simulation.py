@@ -1,28 +1,28 @@
-import wireworld as ww
 import pygame
 
 FRAMES_PER_SECOND = 4
+SCALE_FACTOR = 30
 
-DATA_FILE_1 = 'states/initial_state_1.csv'
-DATA_FILE_2 = 'states/squares.csv'
-DATA_FILE_3 = 'states/xor-generators.csv'
-DATA_FILE_4 = 'states/diode.csv'
+EXAMPLE_INPUT_FILE = 'states/example.csv'
+SQUARES_INPUT_FILE = 'states/squares.csv'
+XOR_GENERATORS_INPUT_FILE = 'states/xor-generators.csv'
+DIODE_INPUT_FILE = 'states/diode.csv'
 INTERRUPTED_FILE = 'states/interrupted.csv'
 
+FILE_TO_LOAD = INTERRUPTED_FILE
 
 class WireworldSimulation:
     def __init__(self, eng):
         self.eng = eng
-        initial_state = self.eng.load_state(INTERRUPTED_FILE)
+        initial_state = self.eng.load_state(FILE_TO_LOAD)
 
         width = initial_state.shape[0]
         height = initial_state.shape[1]
 
         pygame.init()
         self.fps = FRAMES_PER_SECOND
-        self.scale_factor = ww.DEFAULT_SCALE_FACTOR
         self.state = initial_state
-        self.screen = pygame.display.set_mode((width * self.scale_factor, height * self.scale_factor))
+        self.screen = pygame.display.set_mode((width * SCALE_FACTOR, height * SCALE_FACTOR))
         self.clock = pygame.time.Clock()
 
     def start(self):
@@ -50,8 +50,7 @@ class WireworldSimulation:
         self.state = self.eng.get_next_state(self.state)
 
     def _draw(self):
-        display_array = self.eng.get_display_array_from_state(self.state, self.scale_factor)
-        self.screen.fill(ww.BLACK)
+        display_array = self.eng.get_display_array_from_state(self.state, SCALE_FACTOR)
         pygame.surfarray.blit_array(self.screen, display_array)
 
     def _render(self):
