@@ -7,9 +7,9 @@ EXAMPLE_INPUT_FILE = 'states/example.csv'
 SQUARES_INPUT_FILE = 'states/squares.csv'
 XOR_GENERATORS_INPUT_FILE = 'states/xor-generators.csv'
 DIODE_INPUT_FILE = 'states/diode.csv'
-INTERRUPTED_FILE = 'states/interrupted.csv'
+INTERRUPTED_FILE = 'states/test/interrupted.csv'
 
-FILE_TO_LOAD = INTERRUPTED_FILE
+FILE_TO_LOAD = XOR_GENERATORS_INPUT_FILE
 
 class WireworldSimulation:
     """

@@ -1,32 +1,43 @@
 import numpy as np
 import wireworld as ww
+import sys
 
 class WireworldEngine:
 	"""
-    A wireworld state engine based on numpy arrays
-    
-    """
-	def load_state(self, file):
-		"""
-    	Load a state from a CSV file. 
-    	
-    	Note we need to rotate by 270 degrees to account for the ways that
-    	numpy.genfromtxt reads to an array and how pygame displays arrays
-    
-   	 	"""
-		return np.rot90(np.genfromtxt(file, delimiter=','), 3)
-
-
-	def save_state(self, state, file):
-		"""
-    	Save a state from a CSV file. 
-    	
-    	Note we need to rotate by 90 degrees to account for the ways that
-    	numpy.savetxt writes to a file and how pygame displays arrays
-    
-   	 	"""
-		np.savetxt(file, np.rot90(state), delimiter=',', fmt='%i')
+	A wireworld state engine based on numpy arrays
 	
+	"""
+	def load_state(self, fname):
+		"""
+		Load a state from a CSV fname. 
+		
+		Note we need to rotate by 270 degrees to account for the ways that
+		numpy.genfromtxt reads to an array and how pygame displays arrays
+		
+		"""
+		try:
+			array = np.genfromtxt(fname, delimiter=',')
+		except IOError:
+			print("Could not read file:", fname, file=sys.stderr)
+			sys.exit(1)
+			
+		return np.rot90(array, 3)
+
+
+	def save_state(self, state, fname):
+		"""
+		Save a state from a CSV fname. 
+		
+		Note we need to rotate by 90 degrees to account for the ways that
+		numpy.savetxt writes to a fname and how pygame displays arrays
+		
+		"""
+		try:
+			np.savetxt(fname, np.rot90(state), delimiter=',', fmt='%i')
+		except FileNotFoundError:
+			print("Could not save file to non-existent location:", fname, file=sys.stderr)
+			sys.exit(1)
+
 	
 	def get_display_array_from_state(self, state, scale_factor):
 		"""
