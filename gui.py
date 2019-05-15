@@ -35,6 +35,8 @@ class MainGui(gui.Desktop):
     def __init__(self, disp):
         gui.Desktop.__init__(self)
 
+        self.toggle_pause_btn = gui.Switch("Pause", height=50)
+
         # Setup the 'game' area where the action takes place
         self.gameArea = DrawingArea(disp.get_width(),
                                     self.gameAreaHeight)
@@ -58,44 +60,39 @@ class MainGui(gui.Desktop):
         dlg = TestDialog()
 
         def dialog_cb():
-            #dlg.open()
             print("modal dialog clicked!")
-            self.engine.pause()
+            self.engine.toggle_pause()
+            # if self.toggle_pause_btn.value.value == "Pause":
+            #     self.toggle_pause_btn.value = "Resume"
+            # else:
+            #     self.toggle_pause_btn.value = "Pause"
 
-        btn = gui.Button("Modal dialog", height=50)
-        btn.connect(gui.CLICK, dialog_cb)
-        tbl.td(btn)
+        self.toggle_pause_btn.connect(gui.CLICK, dialog_cb)
+        tbl.td(self.toggle_pause_btn)
 
-        # Add a button for pausing / resuming the game clock
-        # def pause_cb():
-        #     if (self.engine.clock.paused):
-        #         self.engine.resume()
-        #     else:
-        #         self.engine.pause()
-        #
-        # btn = gui.Button("Pause/resume clock", height=50)
-        # btn.connect(gui.CLICK, pause_cb)
-        # tbl.td(btn)
-        #
-        # # Add a slider for adjusting the game clock speed
-        # tbl2 = gui.Table()
-        #
-        # timeLabel = gui.Label("Clock speed")
-        #
-        # tbl2.tr()
-        # tbl2.td(timeLabel)
-        #
-        # slider = gui.HSlider(value=23,min=0,max=100,size=20,height=16,width=120)
-        #
-        # def update_speed():
-        #     self.engine.clock.set_speed(slider.value/10.0)
-        #
-        # slider.connect(gui.CHANGE, update_speed)
-        #
-        # tbl2.tr()
-        # tbl2.td(slider)
-        #
-        # tbl.td(tbl2)
+        # Add a slider for adjusting the game clock speed
+        tbl2 = gui.Table()
+
+        timeLabel = gui.Label("Clock speed")
+
+        tbl2.tr()
+        tbl2.td(timeLabel)
+
+        slider = gui.HSlider(value=4,min=1,max=30,size=20,height=16,width=120)
+
+        def update_speed():
+            # if slider.value == 0:
+            #     self.engine.pause
+            # else:
+            #     self.engine.resume
+                self.engine.fps = slider.value
+
+        slider.connect(gui.CHANGE, update_speed)
+
+        tbl2.tr()
+        tbl2.td(slider)
+
+        tbl.td(tbl2)
 
         self.menuArea.add(tbl, 0, 0)
 

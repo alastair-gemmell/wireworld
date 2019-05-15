@@ -33,13 +33,15 @@ class WireworldSimulation:
         self.state = initial_state
         # self.screen = pygame.display.set_mode((width * SCALE_FACTOR, height * SCALE_FACTOR))
         self.screen = pygame.display.set_mode((800, 600))
-        self.clock = timer.Clock() #pygame.time.Clock()
+        self.clock = pygame.time.Clock()
+        self.running = False
 
         self.updates = []
         self.gui = gui.MainGui(self.screen)
         self.gui.engine = self
 
     def start(self):
+        self.running = True
         while True:
             self._loop()
 
@@ -52,15 +54,20 @@ class WireworldSimulation:
         pygame.quit()
         sys.exit(0)
 
+    def toggle_pause(self):
+        self.running = not self.running
+
     def pause(self):
-        self.clock.pause()
+        print("about to pause")
+        self.running = False
 
     def resume(self):
-        self.clock.resume()
+        self.running = True
 
     def _loop(self):
         self._poll()
-        self._update()
+        if self.running:
+            self._update()
         #self._draw()
         self._render()
         self.clock.tick(self.fps)
@@ -93,7 +100,7 @@ class WireworldSimulation:
         if lst:
             self.updates += lst
         pygame.display.update(self.updates)
-        pygame.time.wait(10)
+        #pygame.time.wait(10)
 
         # Now that everything is drawn render it by flipping the buffers
         # pygame.display.flip()

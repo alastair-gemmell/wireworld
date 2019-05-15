@@ -151,10 +151,12 @@ class GameEngine(object):
 
         self.state = initial_state
         self.disp = disp
-        self.square = pygame.Surface((400,400)).convert_alpha()
-        self.square.fill((255,0,0))
+        # self.square = pygame.Surface((400,400)).convert_alpha()
+        # self.square.fill((255,0,0))
         self.app = MainGui(self.disp)
         self.app.engine = self
+
+        self.counter = 0
 
     # Pause the game clock
     def pause(self):
@@ -167,14 +169,23 @@ class GameEngine(object):
     def render(self, dest, rect):
 
         print("a", rect)
-        self.state = self.eng.get_next_state(self.state)
+
 
         display_array = self.eng.get_display_array_from_state(self.state, SCALE_FACTOR)
-        # display_surf = pygame.surfarray.make_surface(display_array)
-        display_surf = pygame.Surface((display_array.shape[0], display_array.shape[1]))
+        display_surf = pygame.surfarray.make_surface(display_array)
+
+
+        r = display_surf.get_rect()
+        r.center = rect.center
+        dest.fill((0,0,0), rect)
+        self.disp.blit(display_surf, r)
+
+
+
+        #display_surf = pygame.Surface((display_array.shape[0], display_array.shape[1]))
         #dest.blit(display_surf, rect)
-        pygame.surfarray.blit_array(display_surf, display_array)
-        self.disp.blit(display_surf, (0,0))
+        #pygame.surfarray.blit_array(display_surf, display_array)
+        #self.disp.blit(display_surf, (0,0))
         #self.updates.append(rect)
 
         print("b", rect)
@@ -182,6 +193,7 @@ class GameEngine(object):
         return rect
 
     def run(self):
+
         self.app.update()
         pygame.display.flip()
 
@@ -199,6 +211,8 @@ class GameEngine(object):
                     # Pass the event off to pgu
                     self.app.event(ev)
             # Render the game
+            self.state = self.eng.get_next_state(self.state)
+            self.counter += 1
             rect = self.app.get_render_area()
             updates = []
             self.disp.set_clip(rect)
@@ -207,6 +221,7 @@ class GameEngine(object):
             if lst:
                 updates.append(lst)
                 print("1", updates)
+                print("COUNTER:", self.counter)
             self.disp.set_clip()
 
             # Cap it at 30fps
@@ -220,7 +235,7 @@ class GameEngine(object):
                 print("2b", updates)
 
             pygame.display.update(updates)
-            pygame.time.wait(10)
+            # pygame.time.wait(10)
 
 
 ###
@@ -228,4 +243,5 @@ disp = pygame.display.set_mode((800, 600))
 ww_eng = engine.WireworldEngine()
 eng = GameEngine(disp, ww_eng)
 eng.run()
+eng.clock.set_speed(1)
 
